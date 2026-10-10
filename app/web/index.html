@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running Control · Painel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230B2545'/%3E%3Cpath d='M13 3 6 13h5l-1 8 7-10h-5z' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+      <span><div class="brand-title">Estação de Carregamento</div><div class="brand-sub">Controle de permanência · running test</div></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="/" aria-current="page">Painel</a>
+      <a href="/indicadores">Indicadores</a>
+      <a href="/plano">Plano de ação</a>
+      <a href="/tv">Modo TV</a>
+      <a href="/config">Configurações</a>
+    </nav>
+    <div class="topbar-right">
+      <span class="clock" id="clock"></span>
+      <button class="icon-btn" data-theme-toggle title="Alternar tema" aria-label="Alternar tema claro/escuro">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="grid kpis" aria-label="Indicadores">
+      <div class="card kpi k-ok"><div class="kpi-label">Na estação</div><div class="kpi-value" id="k-total">—</div><div class="kpi-sub" id="k-total-sub">&nbsp;</div></div>
+      <div class="card kpi k-crit"><div class="kpi-label">Em atraso</div><div class="kpi-value" id="k-crit">—</div><div class="kpi-sub">retirar agora</div></div>
+      <div class="card kpi k-warn"><div class="kpi-label">Vencendo</div><div class="kpi-value" id="k-warn">—</div><div class="kpi-sub">próximas do limite</div></div>
+      <div class="card kpi k-paused"><div class="kpi-label">Pausadas</div><div class="kpi-value" id="k-paused">—</div><div class="kpi-sub">sem expediente — relógio parado</div></div>
+    </section>
+
+    <section class="grid work">
+      <!-- Entrada -->
+      <div class="card">
+        <div class="card-head"><h2>Registrar entrada</h2><span class="spacer"></span><span class="muted" style="font-size:12px">Enter avança para o próximo campo</span></div>
+        <form class="card-body" id="entry" autocomplete="off" novalidate>
+          <div class="form-grid">
+            <div class="field span-2">
+              <label for="f-mat">Matrícula (crachá)</label>
+              <input class="input scan" id="f-mat" name="matricula" inputmode="numeric" required>
+              <div class="hint" id="h-mat"></div>
+            </div>
+            <div class="field span-4">
+              <label for="f-pcba">PCBA (QR da placa)</label>
+              <input class="input scan" id="f-pcba" name="pcba" required>
+              <div class="hint"></div>
+            </div>
+            <div class="field span-2">
+              <label for="f-linha">Linha de produção</label>
+              <select class="select" id="f-linha" name="linha_producao"></select>
+            </div>
+            <div class="field span-2">
+              <label>Lado</label>
+              <div class="seg" id="f-lado" role="group" aria-label="Lado">
+                <button type="button" data-v="Lado A" aria-pressed="true">Lado A</button>
+                <button type="button" data-v="Lado B" aria-pressed="false">Lado B</button>
+              </div>
+            </div>
+            <div class="field span-2">
+              <label for="f-pos">Posição</label>
+              <input class="input scan" id="f-pos" name="posicao" list="l-pos" placeholder="Linha 1 ou L1">
+              <datalist id="l-pos"></datalist>
+            </div>
+            <div class="field span-2">
+              <label for="f-loc">Localização</label>
+              <input class="input scan" id="f-loc" name="localizacao" list="l-loc" placeholder="G1 a G7">
+              <datalist id="l-loc"></datalist>
+            </div>
+            <div class="field span-2">
+              <label>Tipo de teste</label>
+              <div class="seg aging" id="f-tipo" role="group" aria-label="Tipo de teste">
+                <button type="button" data-v="Running" aria-pressed="true">Running charge</button>
+                <button type="button" data-v="Aging" aria-pressed="false">Aging Test</button>
+              </div>
+            </div>
+            <div class="field span-2" id="w-aging" hidden>
+              <label for="f-aging">Duração do aging</label>
+              <select class="select" id="f-aging" name="aging_horas"></select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit" id="b-entry">Registrar entrada</button>
+            <button class="btn btn-ghost" type="reset">Limpar</button>
+            <span class="form-msg muted" id="entry-msg"></span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Saída -->
+      <div class="card">
+        <div class="card-head"><h2>Registrar saída</h2></div>
+        <form class="card-body" id="exit" autocomplete="off">
+          <label class="sr-only" for="f-exit">PCBA</label>
+          <div class="exit-box">
+            <input class="input scan" id="f-exit" placeholder="Leia o QR da PCBA">
+            <button class="btn btn-primary" type="submit">Saída</button>
+          </div>
+          <ul class="rules">
+            <li><span class="dot" style="background:var(--crit)"></span><span>Peça <b>em atraso</b> só sai com o motivo informado.</span></li>
+            <li><span class="dot" style="background:var(--paused)"></span><span>Sem expediente (sáb 03:00 → seg 07:30 e ter–sex 03:00 → 07:30) o relógio do Running <b>para</b>.</span></li>
+            <li><span class="dot" style="background:var(--aging)"></span><span>Aging Test conta o <b>tempo real</b> contra a duração planejada.</span></li>
+            <li><span class="dot" style="background:var(--warn)"></span><span>Alertas sobem a cada nível: <b>+5 min</b> Monitor · <b>+15</b> Líder e Auditor · <b>+30</b> Supervisor. O ciente não para a escalada; só a saída.</span></li>
+          </ul>
+        </form>
+      </div>
+    </section>
+
+    <!-- Registros -->
+    <section class="card">
+      <div class="card-head">
+        <div class="tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-tab="active">Em andamento <span class="count" id="c-active">0</span></button>
+          <button role="tab" aria-selected="false" data-tab="history">Histórico</button>
+        </div>
+        <span class="spacer"></span>
+        <input class="input search" id="q" type="search" placeholder="Buscar PCBA, nome, matrícula, posição…" aria-label="Buscar">
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <thead id="thead"></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="empty hidden" id="empty"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/assets/painel.js"></script>
+</body>
+</html>

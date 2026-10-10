@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running Control · Plano de ação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/analytics.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230B2545'/%3E%3Cpath d='M13 3 6 13h5l-1 8 7-10h-5z' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+      <span><div class="brand-title">Estação de Carregamento</div><div class="brand-sub">Controle de permanência · running test</div></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="/">Painel</a>
+      <a href="/indicadores">Indicadores</a>
+      <a href="/plano" aria-current="page">Plano de ação</a>
+      <a href="/tv">Modo TV</a>
+      <a href="/config">Configurações</a>
+    </nav>
+    <div class="topbar-right">
+      <button class="icon-btn" data-theme-toggle title="Alternar tema" aria-label="Alternar tema claro/escuro">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <h1>Plano de ação</h1>
+        <div class="muted">O que foi decidido a partir dos indicadores — Planejar, Executar, Verificar, Agir.</div>
+      </div>
+      <div class="filters">
+        <label class="sr-only" for="f-linha">Linha</label>
+        <select class="select" id="f-linha"><option value="">Todas as linhas</option></select>
+        <button class="btn btn-primary" id="b-new">+ Nova ação</button>
+        <a class="btn btn-ghost hidden" id="b-login" href="/config">Entrar para editar</a>
+      </div>
+    </div>
+
+    <div class="pdca-sum" id="summary" style="margin-bottom:14px"></div>
+    <section class="board-pdca" id="board" aria-label="Quadro PDCA"></section>
+
+    <section class="card block">
+      <div class="card-head"><h2>Qualidade dos dados</h2><span class="spacer"></span><span class="note">o que distorce os indicadores e precisa de tratamento</span></div>
+      <div class="card-body" id="quality">Carregando…</div>
+    </section>
+  </main>
+
+  <script type="module" src="/assets/plano.js"></script>
+</body>
+</html>

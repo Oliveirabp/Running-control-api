@@ -1,0 +1,22 @@
+/* Configurações */
+.login-wrap { min-height: calc(100vh - 60px); display: grid; place-items: center; padding: 24px 16px; }
+.login { width: min(400px, 100%); padding: 28px; display: grid; gap: 14px; }
+.login h1 { margin: 0; font-size: 20px; }
+.login p { margin: -8px 0 4px; }
+.login-icon { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.who { font-size: 13px; color: var(--text-2); }
+.cfg-tabs { display: inline-flex; margin-bottom: 16px; }
+.cfg-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+.small { font-size: 12.5px; }
+.area { height: auto; padding: 10px 12px; resize: vertical; line-height: 1.5; }
+table.edit td { padding: 6px 8px; }
+table.edit .input, table.edit .select { height: 34px; }
+table.edit td:nth-child(1) { width: 150px; }
+table.edit td:nth-child(2) { width: 150px; }
+.result {
+  margin: 14px 0 0; padding: 12px; border-radius: 8px; background: var(--surface-alt);
+  font: 12px/1.5 var(--mono); white-space: pre-wrap; max-height: 260px; overflow: auto;
+}
+@media (max-width: 900px) { .cfg-2 { grid-template-columns: 1fr; } .cfg-tabs { display: flex; overflow-x: auto; } }
+.base-grid { display: grid; grid-template-columns: 200px 1fr auto; gap: 12px; align-items: end; }
+@media (max-width: 700px) { .base-grid { grid-template-columns: 1fr; } }

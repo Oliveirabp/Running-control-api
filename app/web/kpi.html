@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running Control · Indicadores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/analytics.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230B2545'/%3E%3Cpath d='M13 3 6 13h5l-1 8 7-10h-5z' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+      <span><div class="brand-title">Estação de Carregamento</div><div class="brand-sub">Controle de permanência · running test</div></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="/">Painel</a>
+      <a href="/indicadores" aria-current="page">Indicadores</a>
+      <a href="/plano">Plano de ação</a>
+      <a href="/tv">Modo TV</a>
+      <a href="/config">Configurações</a>
+    </nav>
+    <div class="topbar-right">
+      <button class="icon-btn" data-theme-toggle title="Alternar tema" aria-label="Alternar tema claro/escuro">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <h1>Indicadores do running test</h1>
+        <div class="muted" id="subtitle">Carregando…</div>
+      </div>
+      <form class="filters" id="filters" aria-label="Filtros">
+        <label class="sr-only" for="f-periodo">Período</label>
+        <select class="select" id="f-periodo">
+          <option value="7">Últimos 7 dias</option>
+          <option value="30" selected>Últimos 30 dias</option>
+          <option value="90">Últimos 90 dias</option>
+          <option value="mes">Este mês</option>
+          <option value="custom">Personalizado…</option>
+        </select>
+        <span class="custom hidden" id="w-custom">
+          <input class="input" type="date" id="f-ini" aria-label="Data inicial">
+          <span class="muted">a</span>
+          <input class="input" type="date" id="f-fim" aria-label="Data final">
+        </span>
+        <label class="sr-only" for="f-linha">Linha</label>
+        <select class="select" id="f-linha"><option value="">Todas as linhas</option></select>
+        <label class="sr-only" for="f-turno">Turno</label>
+        <select class="select" id="f-turno">
+          <option value="">Todos os turnos</option>
+          <option>Turno 1</option><option>Turno 2</option><option>Fora de turno</option>
+        </select>
+      </form>
+    </div>
+
+    <section class="grid kpis5" id="cards" aria-label="Resumo"></section>
+    <section id="gain"></section>
+
+    <section class="card block">
+      <div class="card-head"><h2>Leitura executiva</h2><span class="spacer"></span><span class="note" id="ins-note">gerada pelas mesmas regras a cada consulta</span></div>
+      <ul class="insights" id="insights"></ul>
+    </section>
+
+    <div id="content">
+      <section class="card block">
+        <div class="card-head"><h2>Tendência diária</h2><span class="spacer"></span><span class="note">tempo médio e P90 por dia · tracejado = limite</span></div>
+        <div class="chart tall"><canvas id="ch-daily" role="img" aria-label="Tempo médio e P90 por dia"></canvas></div>
+        <div class="chart short"><canvas id="ch-volume" role="img" aria-label="Carregamentos por dia"></canvas></div>
+      </section>
+
+      <div class="grid two">
+        <section class="card">
+          <div class="card-head"><h2>Tempo médio por linha</h2><span class="spacer"></span><span class="note">maior → menor</span></div>
+          <div class="chart"><canvas id="ch-linha" role="img" aria-label="Tempo médio por linha"></canvas></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Por turno</h2><span class="spacer"></span><span class="note">média e P90 · tracejado = limite</span></div>
+          <div class="chart"><canvas id="ch-turno" role="img" aria-label="Tempo médio e P90 por turno"></canvas></div>
+        </section>
+      </div>
+
+      <div class="grid two">
+        <section class="card">
+          <div class="card-head"><h2>Distribuição dos tempos</h2><span class="spacer"></span><span class="note">peças por faixa de 15 min</span></div>
+          <div class="chart"><canvas id="ch-dist" role="img" aria-label="Distribuição das durações"></canvas></div>
+          <div class="legend-row">
+            <span><i class="sw s1"></i>Dentro do limite</span><span><i class="sw warn"></i>Acima do limite</span><span><i class="sw crit"></i>Chegou ao alerta</span>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Por faixa horária</h2><span class="spacer"></span><span class="note">tempo médio por hora de entrada · tracejado = limite</span></div>
+          <div class="chart"><canvas id="ch-faixa" role="img" aria-label="Tempo médio por faixa horária"></canvas></div>
+        </section>
+      </div>
+
+      <div class="grid two">
+        <section class="card">
+          <div class="card-head"><h2>Pareto dos motivos de atraso</h2><span class="spacer"></span><span class="note">peças que chegaram ao limite</span></div>
+          <div class="card-body" id="pareto"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Reação aos alertas</h2><span class="spacer"></span><span class="note">do 1º alerta ao ciente</span></div>
+          <div class="card-body">
+            <div class="mini-cards" id="react-cards"></div>
+            <div class="table-wrap bordered"><table class="data compact"><thead><tr><th>Linha</th><th class="right">Alertas</th><th class="right">Com ciente</th><th class="right">Reação média</th><th class="right">Em até 5 min</th></tr></thead><tbody id="react-rows"></tbody></table></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card block">
+        <div class="card-head"><h2>Linha × turno — tempo médio</h2><span class="spacer"></span><span class="note">fundo: até 80% do limite · até o limite · acima do limite</span></div>
+        <div class="table-wrap"><table class="data heat"><thead id="heat-head"></thead><tbody id="heat-rows"></tbody></table></div>
+      </section>
+
+      <div class="grid two">
+        <section class="card">
+          <div class="card-head"><h2>Ranking de linhas</h2><span class="spacer"></span><span class="note">crítico: média acima do limite · atenção: P90 acima</span></div>
+          <div class="table-wrap"><table class="data compact"><thead><tr><th>Linha</th><th class="right">Vol.</th><th class="right">Média</th><th class="right">P90</th><th>No limite</th><th class="right">Alertas</th><th>Status</th></tr></thead><tbody id="rank-rows"></tbody></table></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>10 maiores permanências</h2><span class="spacer"></span><span class="note">casos para investigar a causa</span></div>
+          <div class="table-wrap"><table class="data compact"><thead><tr><th>PCBA</th><th>Linha</th><th>Turno</th><th>Entrada</th><th class="right">Duração</th></tr></thead><tbody id="top-rows"></tbody></table></div>
+        </section>
+      </div>
+    </div>
+    <div class="card empty-state hidden" id="empty">Nenhum carregamento de running concluído para o período e os filtros escolhidos.</div>
+  </main>
+
+  <script src="/assets/vendor/chart.umd.min.js"></script>
+  <script type="module" src="/assets/kpi.js"></script>
+</body>
+</html>

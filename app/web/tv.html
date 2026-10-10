@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running Control · Modo TV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/tv.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230B2545'/%3E%3Cpath d='M13 3 6 13h5l-1 8 7-10h-5z' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="tv">
+    <header class="tv-head">
+      <div class="brand">
+        <span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+        <div><div class="brand-title">Estação de Carregamento</div><div class="brand-sub">Mapa de ocupação · tempo real</div></div>
+      </div>
+      <nav class="lines" id="lines" aria-label="Linhas de produção"></nav>
+      <div class="head-right">
+        <button class="tv-btn" id="b-rotate" aria-pressed="false">Girar linhas</button>
+        <button class="tv-btn" id="b-full">Tela cheia</button>
+        <a class="tv-btn" href="/">Sair</a>
+        <div class="clock-box"><div class="clock" id="clock"></div><div class="updated" id="updated">conectando…</div></div>
+      </div>
+    </header>
+
+    <section class="kpis" id="kpis" aria-label="Indicadores"></section>
+
+    <main class="board">
+      <section class="side" id="side-a"></section>
+      <section class="side" id="side-b"></section>
+      <aside class="queue">
+        <h2>Fila de atenção</h2>
+        <div id="queue" class="queue-list"></div>
+      </aside>
+    </main>
+
+    <footer class="legend">
+      <span><i class="sw free"></i>Livre</span>
+      <span><i class="sw ok"></i>Carregando no prazo</span>
+      <span><i class="sw warn"></i>Próximo do vencimento</span>
+      <span><i class="sw crit"></i>Atrasado</span>
+      <span><i class="sw paused"></i>Pausado (sem expediente)</span>
+      <span><i class="sw aging"></i>Aging Test (no prazo planejado)</span>
+      <span class="legend-right" id="legend-rule"></span>
+    </footer>
+  </div>
+  <script type="module" src="/assets/tv.js"></script>
+</body>
+</html>

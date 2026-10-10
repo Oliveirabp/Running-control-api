@@ -1,0 +1,30 @@
+[project]
+name = "running-control-api"
+version = "1.0.0"
+description = "Controle de permanência de peças em estações de carregamento (running test)."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Bruno de Oliveira Pinto" }]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S"]
+ignore = [
+  "S101",  # assert nos testes
+  "B008",  # Depends() como valor padrão é o padrão do FastAPI
+  "E731",  # lambda curta é legível aqui
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106", "E501"]  # senhas de teste fictícias; asserts longos
+"scripts/demo_data.py" = ["E501"]     # tabela de exemplos

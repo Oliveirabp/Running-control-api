@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Running Control · Configurações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/config.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230B2545'/%3E%3Cpath d='M13 3 6 13h5l-1 8 7-10h-5z' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+      <span><div class="brand-title">Estação de Carregamento</div><div class="brand-sub">Controle de permanência · running test</div></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="/">Painel</a>
+      <a href="/indicadores">Indicadores</a>
+      <a href="/plano">Plano de ação</a>
+      <a href="/tv">Modo TV</a>
+      <a href="/config" aria-current="page">Configurações</a>
+    </nav>
+    <div class="topbar-right">
+      <span class="who hidden" id="who"></span>
+      <button class="btn btn-ghost btn-sm hidden" id="logout">Sair</button>
+      <button class="icon-btn" data-theme-toggle title="Alternar tema" aria-label="Alternar tema claro/escuro">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Login -->
+  <main class="login-wrap hidden" id="login-view">
+    <form class="card login" id="login" autocomplete="on">
+      <div class="login-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <h1>Acesso do administrador</h1>
+      <p class="muted">Limite, motivos, responsáveis pelos alertas e colaboradores.</p>
+      <div class="field"><label for="l-email">E-mail</label><input class="input" id="l-email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="l-pass">Senha</label><input class="input" id="l-pass" type="password" autocomplete="current-password" required></div>
+      <div class="hint err" id="l-err" role="alert"></div>
+      <button class="btn btn-primary" type="submit" id="l-btn" style="width:100%">Entrar</button>
+    </form>
+  </main>
+
+  <!-- Configurações -->
+  <main class="page hidden" id="admin-view">
+    <div class="tabs cfg-tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="regras">Regras</button>
+      <button role="tab" aria-selected="false" data-tab="resp">Responsáveis</button>
+      <button role="tab" aria-selected="false" data-tab="colab">Colaboradores</button>
+      <button role="tab" aria-selected="false" data-tab="ops">Operação</button>
+    </div>
+
+    <!-- Regras -->
+    <section data-panel="regras" class="grid cfg-2">
+      <form class="card" id="f-limit">
+        <div class="card-head"><h2>Limite de permanência (Running)</h2></div>
+        <div class="card-body">
+          <div class="field" style="max-width:220px"><label for="i-limit">Minutos</label><input class="input mono" id="i-limit" type="number" min="1" max="1440" required></div>
+          <p class="muted small">O amarelo começa nos últimos 15 minutos (ou na metade, se o limite for curto). O Aging usa a duração escolhida na entrada.</p>
+          <button class="btn btn-primary" type="submit">Salvar limite</button>
+        </div>
+      </form>
+      <form class="card" id="f-reasons">
+        <div class="card-head"><h2>Motivos de atraso</h2><span class="spacer"></span><span class="muted small">um por linha</span></div>
+        <div class="card-body">
+          <textarea class="input area" id="i-reasons" rows="8" spellcheck="false"></textarea>
+          <p class="muted small">“Pausa programada (sem expediente)” é sempre incluído pelo sistema.</p>
+          <button class="btn btn-primary" type="submit">Salvar motivos</button>
+        </div>
+      </form>
+      <form class="card" id="f-base" style="grid-column: 1 / -1">
+        <div class="card-head"><h2>Linha de base do kaizen</h2><span class="spacer"></span><span class="muted small" id="base-now">—</span></div>
+        <div class="card-body">
+          <p class="muted small" style="margin-top:0">O tempo médio ANTES da melhoria, congelado. É contra ele que os Indicadores calculam o ganho. Registre a fonte da medição — é ela que torna o ganho auditável.</p>
+          <div class="base-grid">
+            <div class="field"><label for="i-base">Tempo médio antes (min)</label><input class="input mono" id="i-base" type="number" min="1" step="0.1" required></div>
+            <div class="field"><label for="i-fonte">Fonte da medição</label><input class="input" id="i-fonte" placeholder="ex.: cronoanálise jun/2026, 40 amostras, linhas 1 a 3" required></div>
+            <button class="btn btn-primary" type="submit">Salvar linha de base</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Responsáveis -->
+    <section data-panel="resp" class="card hidden">
+      <div class="card-head">
+        <h2>Matriz de escalonamento</h2><span class="spacer"></span>
+        <button class="btn btn-ghost btn-sm" id="r-add">+ Adicionar linha</button>
+        <button class="btn btn-primary btn-sm" id="r-save">Salvar matriz</button>
+      </div>
+      <div class="card-body">
+        <p class="muted small" style="margin-top:0">Nível 1 (+5 min) Monitor · Nível 2 (+15) Líder e Auditor · Nível 3 (+30) Supervisor. Os e-mails vão para o turno em vigor no momento do alerta. Use “TODAS” para quem responde por todas as linhas; o Supervisor vale sempre para todas. Separe vários e-mails com vírgula.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data edit">
+          <thead><tr><th>Linha</th><th>Função</th><th>Turno 1 (seg–sex 07:30–17:28)</th><th>Turno 2 (seg–sex 17:30–03:00)</th><th></th></tr></thead>
+          <tbody id="r-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Colaboradores -->
+    <section data-panel="colab" class="grid cfg-2 hidden">
+      <form class="card" id="f-emp" autocomplete="off">
+        <div class="card-head"><h2>Novo colaborador</h2></div>
+        <div class="card-body">
+          <div class="field"><label for="e-mat">Matrícula</label><input class="input mono" id="e-mat" required></div>
+          <div class="field" style="margin-top:12px"><label for="e-nome">Nome</label><input class="input" id="e-nome" required></div>
+          <button class="btn btn-primary" type="submit" style="margin-top:16px">Cadastrar</button>
+        </div>
+      </form>
+      <div class="card">
+        <div class="card-head"><h2>Cadastrados</h2><span class="count" id="e-count">0</span><span class="spacer"></span><input class="input search" id="e-q" type="search" placeholder="Buscar" aria-label="Buscar colaborador"></div>
+        <div class="table-wrap" style="max-height:480px;overflow:auto">
+          <table class="data"><thead><tr><th>Matrícula</th><th>Nome</th><th></th></tr></thead><tbody id="e-rows"></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operação -->
+    <section data-panel="ops" class="grid cfg-2 hidden">
+      <div class="card">
+        <div class="card-head"><h2>Verificar atrasos agora</h2></div>
+        <div class="card-body">
+          <p class="muted small" style="margin-top:0">O agendador faz isso a cada minuto. Use para testar a matriz de responsáveis.</p>
+          <button class="btn btn-primary" id="o-run">Executar verificação</button>
+          <pre class="result hidden" id="o-result"></pre>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Excluir registro</h2></div>
+        <div class="card-body">
+          <p class="muted small" style="margin-top:0">Para lançamentos feitos por engano. A exclusão não tem volta — prefira registrar a saída.</p>
+          <div class="table-wrap" style="max-height:360px;overflow:auto">
+            <table class="data"><thead><tr><th>PCBA</th><th>Posição</th><th>Entrada</th><th></th></tr></thead><tbody id="o-rows"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/assets/config.js"></script>
+</body>
+</html>
